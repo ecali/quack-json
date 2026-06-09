@@ -27,8 +27,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build & package (macOS)
-        run: npm run dist:mac
+      - name: Build (Vite + TypeScript)
+        run: npm run build
+
+      - name: Package macOS
+        run: npx electron-builder --mac --publish never
 
       - name: Upload macOS artifacts to release
         uses: softprops/action-gh-release@v2
@@ -58,8 +61,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build & package (Windows)
-        run: npm run dist:win
+      - name: Build (Vite + TypeScript)
+        run: npm run build
+
+      - name: Package Windows
+        run: npx electron-builder --win --publish never
 
       - name: Upload Windows artifacts to release
         uses: softprops/action-gh-release@v2
