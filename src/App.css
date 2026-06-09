@@ -1,0 +1,401 @@
+/* ── Reset ──────────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ── Design tokens ──────────────────────────────────── */
+:root {
+  /* Surfaces */
+  --bg:            #13131a;
+  --bg-panel:      #0e0e14;
+  --bg-hover:      #1e1e2e;
+  --bg-active:     #252535;
+
+  /* Borders */
+  --border:        #252535;
+  --border-light:  #2e2e42;
+
+  /* Text */
+  --text:          #cdd6f4;
+  --text-dim:      #6c7086;
+  --text-muted:    #45475a;
+
+  /* Accent */
+  --accent:        #f6c90e;
+  --accent-hover:  #ffd60a;
+
+  /* JSON colors */
+  --json-key:      #89b4fa;
+  --json-string:   #a6e3a1;
+  --json-number:   #fab387;
+  --json-boolean:  #f38ba8;
+  --json-null:     #6c7086;
+  --json-bracket:  #cba6f7;
+  --json-punct:    #45475a;
+
+  /* Status */
+  --color-ok:      #a6e3a1;
+  --color-error:   #f38ba8;
+  --color-warn:    #f9e2af;
+
+  /* Mono font */
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', 'Menlo', monospace;
+  --font-ui:   -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ── Base ────────────────────────────────────────────── */
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── App layout ─────────────────────────────────────── */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ── Header ─────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  padding: 0 14px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+}
+
+.logo-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.logo-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.3px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-light);
+  margin: 0 4px;
+}
+
+.btn {
+  padding: 5px 11px;
+  border: 1px solid var(--border-light);
+  background: var(--bg-hover);
+  color: var(--text);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-family: var(--font-ui);
+  white-space: nowrap;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--bg-active);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn-danger:hover:not(:disabled) {
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+/* ── Main split panels ──────────────────────────────── */
+.main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 32px;
+  padding: 0 14px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  flex-shrink: 0;
+}
+
+.panel-hint {
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-muted);
+}
+
+/* ── Editor panel ───────────────────────────────────── */
+.editor-panel {
+  flex-shrink: 0;
+}
+
+.json-editor {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  padding: 14px 16px;
+  background: var(--bg);
+  color: var(--text);
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  tab-size: 2;
+  caret-color: var(--accent);
+}
+
+.json-editor::placeholder {
+  color: var(--text-muted);
+}
+
+/* ── Divider ────────────────────────────────────────── */
+.divider {
+  width: 4px;
+  background: var(--border);
+  cursor: col-resize;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  position: relative;
+}
+
+.divider::after {
+  content: '';
+  position: absolute;
+  inset: 0 -3px;
+}
+
+.divider:hover {
+  background: var(--accent);
+}
+
+/* ── Viewer panel ───────────────────────────────────── */
+.viewer-panel {
+  flex: 1;
+}
+
+.viewer-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  padding: 12px 16px 24px;
+  height: 100%;
+}
+
+.viewer-content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.viewer-content::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+.viewer-content::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 4px;
+}
+
+.viewer-content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ── Empty / Error states ───────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100% - 48px);
+  gap: 14px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.empty-duck {
+  font-size: 52px;
+  opacity: 0.3;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+.error-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 14px;
+  background: rgba(243, 139, 168, 0.08);
+  border: 1px solid rgba(243, 139, 168, 0.25);
+  border-radius: 8px;
+  color: var(--color-error);
+  font-size: 12.5px;
+  font-family: var(--font-mono);
+  line-height: 1.5;
+}
+
+.error-icon {
+  font-size: 15px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── JSON Tree ──────────────────────────────────────── */
+.json-tree {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: nowrap;
+  user-select: text;
+}
+
+.jn-node {
+  display: block;
+}
+
+.jn-line {
+  display: flex;
+  align-items: baseline;
+  border-radius: 4px;
+  padding: 0 4px;
+  min-height: 1.8em;
+}
+
+.jn-expandable {
+  cursor: pointer;
+}
+
+.jn-expandable:hover {
+  background: var(--bg-hover);
+}
+
+.jn-arrow {
+  color: var(--text-muted);
+  font-size: 9px;
+  margin-right: 5px;
+  width: 10px;
+  display: inline-block;
+  flex-shrink: 0;
+  line-height: 1.8em;
+  transition: color 0.1s;
+}
+
+.jn-expandable:hover .jn-arrow {
+  color: var(--accent);
+}
+
+.jn-key {
+  color: var(--json-key);
+}
+
+.jn-punct {
+  color: var(--json-punct);
+  margin: 0 1px;
+}
+
+.jn-value {
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 0 2px;
+  transition: background 0.1s;
+}
+
+.jn-value:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.jn-bracket {
+  color: var(--json-bracket);
+}
+
+.jn-preview {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-style: italic;
+  margin: 0 5px;
+}
+
+/* ── Status bar ─────────────────────────────────────── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 14px;
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.status {
+  font-size: 11.5px;
+}
+
+.status-ok {
+  color: var(--color-ok);
+}
+
+.status-error {
+  color: var(--color-error);
+}
+
+.status-idle {
+  color: var(--text-muted);
+}
