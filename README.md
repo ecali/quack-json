@@ -1,8 +1,23 @@
 # 🦆 quack-json
 
-> A fast, lightweight JSON viewer with interactive tree visualization — available as a native desktop app for **macOS** and **Windows**.
+<p>
+  <a href="https://github.com/ecali/quack-json/actions/workflows/release.yml">
+    <img src="https://github.com/ecali/quack-json/actions/workflows/release.yml/badge.svg" alt="Build & Release">
+  </a>
+  <a href="https://github.com/ecali/quack-json/releases/latest">
+    <img src="https://img.shields.io/github/v/release/ecali/quack-json?color=f6c90e&label=latest" alt="Latest Release">
+  </a>
+  <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows-lightgrey" alt="Platform">
+  <img src="https://img.shields.io/badge/Electron-41-47848f?logo=electron&logoColor=white" alt="Electron">
+  <img src="https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=white" alt="React">
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-green" alt="License MIT">
+  </a>
+</p>
 
-![quack-json screenshot](https://via.placeholder.com/900x560/13131a/f6c90e?text=quack-json+%F0%9F%A6%86)
+> A fast, lightweight JSON viewer with interactive tree visualization — native desktop app for **macOS** and **Windows**.
+
+![quack-json UI](https://placehold.co/900x500/13131a/f6c90e?text=🦆+quack-json%0AJSON+Input+|+Tree+Viewer)
 
 ---
 
@@ -23,41 +38,27 @@
 
 ---
 
-## Quick start (pre-built)
+## Download
 
-### macOS
+| Platform | File | Notes |
+|---|---|---|
+| macOS Apple Silicon | `quack-json-x.x.x-arm64.dmg` | M1 / M2 / M3 |
+| macOS Intel | `quack-json-x.x.x.dmg` | x64 |
+| Windows installer | `quack-json.Setup.x.x.x.exe` | NSIS, with uninstaller |
+| Windows portable | `quack-json.x.x.x.exe` | No installation needed |
 
-Download from the [Releases](https://github.com/ecali/quack-json/releases) page:
+**→ [Download latest release](https://github.com/ecali/quack-json/releases/latest)**
 
-| Build | File |
-|---|---|
-| Apple Silicon (M1/M2/M3) | `quack-json-x.x.x-arm64.dmg` |
-| Intel | `quack-json-x.x.x.dmg` |
-
-1. Open the `.dmg` file
-2. Drag **quack-json** into your Applications folder
-3. Launch from Spotlight or Applications
-
-> **Note:** The app is not code-signed. On first launch, right-click → Open to bypass Gatekeeper.
-
-### Windows
-
-Download `quack-json-x.x.x-setup.exe` from [Releases](https://github.com/ecali/quack-json/releases):
-
-1. Run the installer and follow the steps
-2. A desktop shortcut is created automatically
-3. Launch quack-json from the desktop or Start menu
-
-A `portable.exe` is also available — no installation required, just run it.
+> **macOS note:** The app is not code-signed. On first launch, right-click → **Open** to bypass Gatekeeper.
 
 ---
 
 ## Usage guide
 
-### 1. Paste JSON
+### 1. Paste or load JSON
 
-Click inside the **JSON Input** panel on the left and paste your JSON.  
-The tree view on the right updates instantly.
+Paste JSON directly in the **JSON Input** panel, or click **Load File** to open a file from disk.  
+The tree updates instantly as you type.
 
 ```json
 {
@@ -72,29 +73,27 @@ The tree view on the right updates instantly.
 
 ### 2. Navigate the tree
 
-- **Click a `▶` arrow** (or anywhere on the row) to expand a node
-- **Click a `▼` arrow** to collapse it
-- **Click any primitive value** (string, number, boolean, null) to copy it to clipboard
-- Use **Expand All** / **Collapse All** in the toolbar to toggle the entire tree
+| Action | Result |
+|---|---|
+| Click `▶` / `▼` on a row | Expand / collapse that node |
+| Click a primitive value | Copy it to clipboard |
+| **Expand All** button | Recursively expand all nodes |
+| **Collapse All** button | Recursively collapse all nodes |
 
-### 3. Load from file
+### 3. Toolbar actions
 
-Click **Load File** to open a native file picker and load any `.json` file from disk.
+| Button | Description |
+|---|---|
+| **Format** | Re-indent the raw JSON (2-space indent) |
+| **Load File** | Open a `.json` file via native file picker |
+| **Copy** | Copy the formatted JSON to clipboard |
+| **Expand All** | Expand every node in the tree |
+| **Collapse All** | Collapse every node in the tree |
+| **Clear** | Empty the editor |
 
-### 4. Format
+### 4. Resize panels
 
-Click **Format** to re-indent the raw JSON in the editor (2-space indent).  
-Useful for minified or badly formatted input.
-
-### 5. Copy
-
-Click **Copy** to copy the current formatted JSON to clipboard.  
-The button briefly changes to `✓ Copied` as confirmation.
-
-### 6. Resize panels
-
-Drag the vertical divider between the two panels to adjust the split.  
-The split ratio is constrained between 20% and 80%.
+Drag the vertical divider to adjust the editor/tree split (20–80%).
 
 ---
 
@@ -102,8 +101,8 @@ The split ratio is constrained between 20% and 80%.
 
 ### Prerequisites
 
-- **Node.js** 18 or later
-- **npm** 9 or later
+- **Node.js** 18+
+- **npm** 9+
 
 ### Clone and install
 
@@ -119,7 +118,7 @@ npm install
 npm run dev
 ```
 
-This starts Vite with HMR and opens an Electron window. Changes to `src/` are reflected immediately via hot module replacement. Changes to `electron/main.ts` trigger a full restart.
+Starts Vite with HMR and opens an Electron window. Renderer changes are hot-reloaded; changes to `electron/main.ts` trigger a full restart.
 
 ### Build for production
 
@@ -128,23 +127,34 @@ npm run build
 ```
 
 Produces:
-- `dist/` — compiled renderer (React app)
+- `dist/` — compiled React renderer
 - `dist-electron/` — compiled main process and preload
 
 ### Package installers
 
 ```bash
-# macOS (DMG + ZIP, both arm64 and x64)
+# macOS — DMG + ZIP for arm64 and x64
 npm run dist:mac
 
-# Windows (NSIS installer + portable EXE, x64)
+# Windows — NSIS installer + portable EXE (x64)
 npm run dist:win
 
-# Both platforms at once
+# Both platforms
 npm run dist:all
 ```
 
-Outputs land in the `release/` directory.
+Output goes to `release/`.
+
+### Create a release
+
+Tag the commit and push — GitHub Actions takes care of the rest:
+
+```bash
+git tag -a v1.2.0 -m "Release v1.2.0"
+git push origin v1.2.0
+```
+
+The [release workflow](.github/workflows/release.yml) builds on native macOS and Windows runners, then publishes all artifacts to a GitHub Release automatically.
 
 ---
 
@@ -152,24 +162,27 @@ Outputs land in the `release/` directory.
 
 ```
 quack-json/
+├── .github/
+│   └── workflows/
+│       └── release.yml      # CI: build + publish on tag push
 ├── electron/
-│   ├── main.ts          # Electron main process (window, IPC, file dialog)
-│   └── preload.ts       # Preload script — exposes electronAPI to renderer
+│   ├── main.ts              # Main process — window, IPC, file dialog
+│   └── preload.ts           # Preload — exposes electronAPI to renderer
 ├── src/
 │   ├── components/
-│   │   └── JsonTree.tsx # Recursive JSON tree component
-│   ├── App.tsx          # Root component — layout, state, toolbar logic
-│   ├── App.css          # All styles (CSS variables, layout, tree colors)
-│   ├── env.d.ts         # TypeScript declaration for window.electronAPI
-│   ├── index.css        # Minimal base reset
-│   └── main.tsx         # React entry point
+│   │   └── JsonTree.tsx     # Recursive JSON tree component
+│   ├── App.tsx              # Root — layout, state, toolbar logic
+│   ├── App.css              # All styles (CSS variables, tree colors)
+│   ├── env.d.ts             # Type declaration for window.electronAPI
+│   ├── index.css            # Base reset
+│   └── main.tsx             # React entry point
 ├── public/
-│   └── favicon.svg      # Duck SVG favicon
-├── package.json         # Scripts + electron-builder config
-├── vite.config.ts       # Vite + vite-plugin-electron config
-├── tsconfig.json        # TypeScript project references
-├── tsconfig.app.json    # TypeScript config for src/ (browser)
-└── tsconfig.node.json   # TypeScript config for electron/ + vite.config (Node)
+│   └── favicon.svg          # Duck SVG favicon
+├── package.json             # Scripts + electron-builder config
+├── vite.config.ts           # Vite + vite-plugin-electron
+├── tsconfig.json            # Project references root
+├── tsconfig.app.json        # TypeScript for src/ (browser)
+└── tsconfig.node.json       # TypeScript for electron/ + vite.config (Node)
 ```
 
 ---
@@ -184,9 +197,9 @@ quack-json/
 | Desktop shell | [Electron 41](https://www.electronjs.org) |
 | Electron + Vite bridge | [vite-plugin-electron](https://github.com/electron-vite/vite-plugin-electron) |
 | Packaging | [electron-builder](https://www.electron.build) |
-| Icons | [lucide-react](https://lucide.dev) |
+| CI / CD | [GitHub Actions](https://docs.github.com/en/actions) |
 
-No external JSON viewer library is used — the tree component (`src/components/JsonTree.tsx`) is built from scratch as a recursive React component.
+The JSON tree component (`src/components/JsonTree.tsx`) is built from scratch — no external viewer library.
 
 ---
 
@@ -196,53 +209,41 @@ No external JSON viewer library is used — the tree component (`src/components/
 
 ```
 Renderer (React)
-  └─ window.electronAPI.openFile()          [contextBridge]
-       └─ ipcRenderer.invoke('open-file-dialog')
-            └─ ipcMain.handle('open-file-dialog')   [main process]
+  └─ window.electronAPI.openFile()
+       └─ ipcRenderer.invoke('open-file-dialog')       [preload / contextBridge]
+            └─ ipcMain.handle('open-file-dialog')      [main process]
                  └─ dialog.showOpenDialog()
-                      └─ readFileSync(path)
-                           └─ returns string to renderer
+                      └─ readFileSync(path) → string
 ```
 
-Security model: `nodeIntegration` is disabled and `contextIsolation` is enabled. The renderer never has direct access to Node.js APIs — only the minimal surface exposed via `contextBridge` in `preload.ts`.
+`nodeIntegration` is disabled and `contextIsolation` is enabled. The renderer only accesses the minimal surface exposed via `contextBridge`.
 
-### JsonTree component
+### Expand / collapse trigger pattern
 
-`JsonNode` (in `JsonTree.tsx`) is a self-recursive component that:
-
-1. Detects the value type: object, array, or primitive
-2. For **complex** values (object/array): renders an expand/collapse header, then maps children as nested `JsonNode` instances
-3. For **primitives**: renders a colored `<span>` with click-to-copy
-4. Responds to `expandTrigger` and `collapseTrigger` counters (passed from `App`) via `useEffect` — incrementing either counter forces all nodes to expand or collapse regardless of their current local state
-
-### Expand/collapse trigger pattern
-
-Rather than a boolean `expandAll` prop (which would be ignored if already `true` when clicked again), the component uses monotonically-increasing integer triggers:
+Nodes use monotonically-increasing counters instead of a boolean flag, so "Expand All" always works even if the tree is already in a mixed state:
 
 ```tsx
-// In App.tsx
+// App.tsx
 const [expandTrigger, setExpandTrigger] = useState(0)
 const handleExpandAll = () => setExpandTrigger(t => t + 1)
 
-// In JsonNode.tsx
+// JsonNode.tsx
 useEffect(() => {
   if (expandTrigger > 0) setIsExpanded(true)
 }, [expandTrigger])
 ```
-
-This guarantees re-expansion works even if the tree is already at a mixed state.
 
 ---
 
 ## Contributing
 
 1. Fork the repo
-2. Create a feature branch: `git checkout -b feat/my-feature`
-3. Commit your changes: `git commit -m "feat: add my feature"`
+2. Create a branch: `git checkout -b feat/my-feature`
+3. Commit: `git commit -m "feat: add my feature"`
 4. Push and open a Pull Request
 
 ---
 
 ## License
 
-MIT
+[MIT](LICENSE) © ecali
